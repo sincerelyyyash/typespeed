@@ -27,7 +27,91 @@ The status bar displays: `⚡ X WPM (🏆 Y WPM)`
 
 ## Requirements
 
-- VS Code version 1.105.0 or higher
+- VS Code/Cursor version 1.60.0 or higher
+- Node.js (for building from source)
+
+## Installation
+
+### Install Locally from Source
+
+Follow these steps to install the extension locally in Cursor or VS Code after cloning the repository:
+
+#### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/sincerelyyyash/typespeed.git
+cd typespeed
+```
+
+#### Step 2: Install Dependencies
+
+```bash
+npm install
+```
+
+#### Step 3: Compile the Extension
+
+```bash
+npm run compile
+```
+
+#### Step 4: Package the Extension
+
+```bash
+npm run package
+```
+
+This will create a `typespeed-0.0.1.vsix` file in the project root.
+
+#### Step 5: Install the Extension
+
+**Option A: Using Command Palette (Recommended)**
+
+1. Open Cursor or VS Code
+2. Press `Cmd + Shift + P` (Mac) or `Ctrl + Shift + P` (Windows/Linux) to open the Command Palette
+3. Type: `Extensions: Install from VSIX...`
+4. Select the `typespeed-0.0.1.vsix` file from the project root
+5. Restart Cursor/VS Code if prompted
+
+**Option B: Using Terminal**
+
+For VS Code:
+```bash
+code --install-extension typespeed-0.0.1.vsix
+```
+
+For Cursor:
+```bash
+cursor --install-extension typespeed-0.0.1.vsix
+```
+
+#### Step 6: Verify Installation
+
+1. Open any file in Cursor/VS Code
+2. Start typing
+3. Check the status bar (bottom right) - you should see: `⚡ -- WPM (🏆 0 WPM)`
+4. After you stop typing for 3 seconds, your WPM will be calculated and displayed
+
+### Development Mode
+
+To develop and test the extension locally:
+
+1. Run the watch mode to auto-compile on changes:
+   ```bash
+   npm run watch
+   ```
+
+2. Press `F5` in VS Code/Cursor to launch the Extension Development Host
+3. A new window will open with your extension loaded
+4. Make changes to your code - it will auto-compile, then reload the extension host window
+
+### Updating the Extension
+
+When you make changes to the extension:
+
+1. Run `npm run compile` to rebuild
+2. Run `npm run package` to create a new `.vsix` file
+3. Install the new `.vsix` file (it will replace the old version)
 
 ## Extension Settings
 
