@@ -2,7 +2,8 @@
   "name": "typespeed",
   "displayName": "Typing Speed",
   "description": "Calculates and displays your typing speed (WPM) in the status bar when you stop typing",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "license": "MIT",
   "publisher": "sincerelyyyash",
   "repository": {
     "type": "git",
