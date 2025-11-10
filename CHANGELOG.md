@@ -4,6 +4,12 @@ All notable changes to the "typespeed" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.4] - 2025-11-10
+
+### Changed
+- Updated status bar iconography to improve legibility and match VS Code's latest icon set.
+- Synced package metadata to version `0.0.4`.
+
 ## [0.0.1] - 2024-11-09
 
 ### Added
