@@ -26,11 +26,11 @@ export const calculateWPM = (characterCount: number, timeElapsedMs: number): num
 };
 
 const updateStatusBar = (currentWPM: number | null): void => {
-	if (currentWPM !== null) {
-		statusBarItem.text = `⚡ ${currentWPM} WPM (🏆 ${highestWPM} WPM)`;
-	} else {
-		statusBarItem.text = `⚡ -- WPM (🏆 ${highestWPM} WPM)`;
-	}
+	const bestWpmIcon = '$(milestone)';
+	statusBarItem.text =
+		currentWPM !== null
+			? `$(zap) ${currentWPM} WPM (${bestWpmIcon} ${highestWPM} WPM)`
+			: `$(zap) -- WPM (${bestWpmIcon} ${highestWPM} WPM)`;
 	statusBarItem.show();
 };
 

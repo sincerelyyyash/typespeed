@@ -21,7 +21,7 @@ A VS Code extension that calculates and displays your typing speed (WPM - Words 
 
 ## Status Bar Format
 
-The status bar displays: `⚡ X WPM (🏆 Y WPM)`
+The status bar displays: `$(zap) X WPM ($(milestone) Y WPM)`
 - **X** = Your current/last calculated WPM
 - **Y** = Your all-time highest WPM
 
@@ -89,7 +89,7 @@ cursor --install-extension typespeed-0.0.1.vsix
 
 1. Open any file in Cursor/VS Code
 2. Start typing
-3. Check the status bar (bottom right) - you should see: `⚡ -- WPM (🏆 0 WPM)`
+3. Check the status bar (bottom right) - you should see: `$(zap) -- WPM ($(milestone) 0 WPM)`
 4. After you stop typing for 3 seconds, your WPM will be calculated and displayed
 
 ### Development Mode
