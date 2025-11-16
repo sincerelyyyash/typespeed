@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { calculateWPM, activate, deactivate } from '../extension';
+import { calculateWPM, activate, deactivate, resetHighscore } from '../extension';
 
 // Mock ExtensionContext for testing
 const createMockContext = (initialHighestWPM: number = 0): vscode.ExtensionContext => {
@@ -234,6 +234,99 @@ suite('Typing Speed Extension Tests', () => {
 			const result = calculateWPM(100, 1);
 			assert.ok(result > 0, 'Should calculate WPM for very small time values');
 			assert.ok(Number.isFinite(result), 'Result should be finite');
+		});
+	});
+
+	suite('Reset Highscore Tests', () => {
+		test('should reset highscore to 0', async () => {
+			const context = createMockContext(150);
+			await activate(context);
+
+			// Verify initial score
+			let currentScore = context.globalState.get<number>('typespeed.highestWPM', 0);
+			assert.strictEqual(currentScore, 150, 'Initial score should be 150');
+
+			// Reset highscore
+			resetHighscore();
+
+			// Verify score was reset
+			currentScore = context.globalState.get<number>('typespeed.highestWPM', 0);
+			assert.strictEqual(currentScore, 0, 'Score should be reset to 0');
+		});
+
+		test('should reset highscore when already at 0', async () => {
+			const context = createMockContext(0);
+			await activate(context);
+
+			// Reset highscore
+			resetHighscore();
+
+			// Verify score remains 0
+			const currentScore = context.globalState.get<number>('typespeed.highestWPM', 0);
+			assert.strictEqual(currentScore, 0, 'Score should remain 0');
+		});
+
+		test('should reset highscore command via executeCommand', async () => {
+			const context = createMockContext(200);
+			await activate(context);
+
+			// Verify initial score
+			let currentScore = context.globalState.get<number>('typespeed.highestWPM', 0);
+			assert.strictEqual(currentScore, 200, 'Initial score should be 200');
+
+			// Execute reset command
+			await vscode.commands.executeCommand('typespeed.resetHighscore');
+
+			// Verify score was reset
+			currentScore = context.globalState.get<number>('typespeed.highestWPM', 0);
+			assert.strictEqual(currentScore, 0, 'Score should be reset to 0 after command execution');
+		});
+
+		test('should persist reset highscore in globalState', async () => {
+			const context = createMockContext(100);
+			await activate(context);
+
+			// Reset highscore
+			resetHighscore();
+
+			// Wait for async update
+			await new Promise(resolve => setTimeout(resolve, 50));
+
+			// Verify persistence
+			const persistedScore = context.globalState.get<number>('typespeed.highestWPM', 0);
+			assert.strictEqual(persistedScore, 0, 'Reset score should be persisted in globalState');
+		});
+
+		test('should handle reset with no context gracefully', async () => {
+			// This tests the edge case where extensionContext might be undefined
+			// We can't easily test this without modifying the code, but we can test
+			// that reset works when context exists
+			const context = createMockContext(50);
+			await activate(context);
+			resetHighscore();
+			const score = context.globalState.get<number>('typespeed.highestWPM', 0);
+			assert.strictEqual(score, 0, 'Reset should work with valid context');
+		});
+	});
+
+	suite('Menu Command Tests', () => {
+		test('should register showMenu command', async () => {
+			const context = createMockContext();
+			await activate(context);
+
+			// Verify command is registered by trying to execute it
+			// Note: This will show a QuickPick, but we can verify the command exists
+			const commands = await vscode.commands.getCommands();
+			assert.ok(commands.includes('typespeed.showMenu'), 'showMenu command should be registered');
+		});
+
+		test('should register resetHighscore command', async () => {
+			const context = createMockContext();
+			await activate(context);
+
+			// Verify command is registered
+			const commands = await vscode.commands.getCommands();
+			assert.ok(commands.includes('typespeed.resetHighscore'), 'resetHighscore command should be registered');
 		});
 	});
 });

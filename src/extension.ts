@@ -31,6 +31,8 @@ const updateStatusBar = (currentWPM: number | null): void => {
 		currentWPM !== null
 			? `$(zap) ${currentWPM} WPM (${bestWpmIcon} ${highestWPM} WPM)`
 			: `$(zap) -- WPM (${bestWpmIcon} ${highestWPM} WPM)`;
+	statusBarItem.command = 'typespeed.showMenu';
+	statusBarItem.tooltip = 'Click to open menu';
 	statusBarItem.show();
 };
 
@@ -95,6 +97,45 @@ const handleDocumentChange = (event: vscode.TextDocumentChangeEvent): void => {
 	resetIdleTimer();
 };
 
+const resetHighscore = (): void => {
+	highestWPM = 0;
+	if (extensionContext) {
+		extensionContext.globalState.update('typespeed.highestWPM', 0);
+	}
+	updateStatusBar(null);
+	vscode.window.showInformationMessage('Highscore WPM has been reset to 0');
+};
+
+export { resetHighscore };
+
+const showMenu = async (): Promise<void> => {
+	const options = [
+		{
+			label: '$(refresh) Reset Highscore WPM',
+			description: 'Reset your highest WPM to 0',
+			action: 'reset'
+		}
+	];
+
+	const selected = await vscode.window.showQuickPick(options, {
+		placeHolder: 'Select an option',
+		ignoreFocusOut: true
+	});
+
+	if (selected && selected.action === 'reset') {
+		const confirm = await vscode.window.showWarningMessage(
+			'Are you sure you want to reset your highscore WPM?',
+			{ modal: true },
+			'Reset',
+			'Cancel'
+		);
+
+		if (confirm === 'Reset') {
+			resetHighscore();
+		}
+	}
+};
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -114,6 +155,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// Listen to document changes
 	const documentChangeDisposable = vscode.workspace.onDidChangeTextDocument(handleDocumentChange);
 	context.subscriptions.push(documentChangeDisposable);
+
+	// Register commands
+	const showMenuCommand = vscode.commands.registerCommand('typespeed.showMenu', showMenu);
+	const resetHighscoreCommand = vscode.commands.registerCommand('typespeed.resetHighscore', resetHighscore);
+	context.subscriptions.push(showMenuCommand, resetHighscoreCommand);
 
 	// Cleanup on deactivation
 	context.subscriptions.push({

@@ -4,6 +4,18 @@ All notable changes to the "typespeed" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.5] - 2025-11-16
+
+### Added
+- Clickable status bar item that opens a popover menu
+- Reset highscore WPM functionality via menu option
+- Confirmation dialog before resetting highscore to prevent accidental resets
+- Menu command registration for easy access to reset functionality
+
+### Changed
+- Status bar item is now interactive with tooltip indicating clickability
+- Improved user experience with menu-based actions
+
 ## [0.0.4] - 2025-11-10
 
 ### Changed

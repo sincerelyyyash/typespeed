@@ -2,7 +2,7 @@
   "name": "typespeed",
   "displayName": "Typing Speed",
   "description": "Calculates and displays your typing speed (WPM) in the status bar when you stop typing",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "publisher": "sincerelyyyash",
   "repository": {
@@ -31,8 +31,13 @@
   "contributes": {
     "commands": [
       {
-        "command": "typespeed.helloWorld",
-        "title": "Hello World"
+        "command": "typespeed.showMenu",
+        "title": "Show Menu",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "typespeed.resetHighscore",
+        "title": "Reset Highscore WPM"
       }
     ]
   },
